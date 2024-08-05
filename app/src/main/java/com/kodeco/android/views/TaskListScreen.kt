@@ -50,15 +50,19 @@ fun TaskListContent(
         tasks: List<TaskList>,
         onClick: (String) -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier,
-        content = {
-            items(tasks) {
-                ListItemView(
-                    value = it.name,
-                    onClick = onClick
-                )
+    if(tasks.isEmpty()) {
+        EmptyView(message = stringResource(id = R.string.text_no_tasks))
+    } else {
+        LazyColumn(
+            modifier = modifier,
+            content = {
+                items(tasks) {
+                    ListItemView(
+                        value = it.name,
+                        onClick = onClick
+                    )
+                }
             }
-        }
-    )
+        )
+    }
 }

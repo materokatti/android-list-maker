@@ -6,4 +6,6 @@
     <string name="label_list_maker">List Maker</string>
     <string name="name_of_list">What is the name of your list?</string>
     <string name="task_hint">Enter name</string>
+    <string name="cd_list_icon">List Icon</string>
+    <string name="text_no_tasks">No tasks yet</string>
 </resources>
