@@ -5,6 +5,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,6 +19,10 @@ import com.kodeco.android.viewmodel.ListDataManager
 @Composable
 fun TaskListScreen() {
     val taskListViewModel: ListDataManager = viewModel()
+    val viewModelTasks = taskListViewModel.readLists().toList()
+    var tasks by remember {
+        mutableStateOf(viewModelTasks)
+    }
     Scaffold(
         topBar = {
             ListMakerTopAppBar(
@@ -28,7 +36,7 @@ fun TaskListScreen() {
                 modifier = Modifier
                     .padding(it)
                     .fillMaxSize(),
-                tasks = emptyList(),
+                tasks = tasks,
                 onClick = { taskName ->
                     // TODO navigate to the tasks details screen
                 }
@@ -39,7 +47,8 @@ fun TaskListScreen() {
                 title = stringResource(id = R.string.name_of_list),
                 inputHint = stringResource(id = R.string.task_hint),
                 onFabClick = {
-                    // TODO save the task list
+                    tasks = (tasks + TaskList(it))
+                    taskListViewModel.saveList(TaskList(it))
                 }
             )
         }
