@@ -8,4 +8,5 @@
     <string name="task_hint">Enter name</string>
     <string name="cd_list_icon">List Icon</string>
     <string name="text_no_tasks">No tasks yet</string>
+    <string name="text_no_todos">No todos for this task yet</string>
 </resources>
