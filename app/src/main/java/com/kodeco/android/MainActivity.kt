@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.kodeco.android.navigation.AppNavHost
 import com.kodeco.android.ui.theme.ListMakerTheme
 import com.kodeco.android.views.TaskListScreen
 
@@ -21,16 +22,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ListMakerTheme {
-                    TaskListScreen()
+                    AppNavHost()
             }
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ListMakerTheme {
-        TaskListScreen()
-    }
-}
+.
