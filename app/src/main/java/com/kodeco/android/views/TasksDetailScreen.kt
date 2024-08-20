@@ -5,15 +5,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kodeco.android.R
+import com.kodeco.android.data.TaskList
 import com.kodeco.android.navigation.Screens
+import com.kodeco.android.viewmodel.ListDataManager
 
 @Composable
 fun TaskDetailScreenContent(
     modifier: Modifier,
     taskTodos: List<String>
+
 ){
     if(taskTodos.isEmpty()){
         EmptyView(message = stringResource(id = R.string.text_no_todos))
@@ -37,22 +45,25 @@ fun TaskDetailScreenContent(
 @Composable
 fun TaskDetailScreen(
     taskName: String?,
-    onBackPressed:() -> Unit
+    onBackPressed:() -> Unit,
 ){
+    val viewModel: ListDataManager = viewModel()
+    var taskTodos by remember {
+        mutableStateOf(viewModel.readLists().firstOrNull { it.name == taskName }?.tasks ?: emptyList())
+    }
+
     Scaffold(
         topBar = {
             ListMakerTopAppBar(
-                title = "",
+                title = taskName ?: stringResource(id = R.string.label_task_list),
                 showBackButton = true,
-                onBackPressed = {
-
-                }
+                onBackPressed = onBackPressed
             )
         },
         content = {
             TaskDetailScreenContent(
                 modifier = Modifier.padding(it),
-                taskTodos = emptyList()
+                taskTodos = taskTodos
             )
         },
         floatingActionButton = {
@@ -60,7 +71,9 @@ fun TaskDetailScreen(
                 title = stringResource(id = R.string.task_to_add),
                 inputHint = stringResource(id = R.string.task_hint),
                 onFabClick = { todoName ->
-
+                    viewModel.saveList(TaskList(taskName ?: "", taskTodos + listOf(todoName)))
+                    taskTodos = viewModel.readLists().firstOrNull { it.name == taskName }?.tasks
+                        ?: emptyList()
                 }
             )
         }
