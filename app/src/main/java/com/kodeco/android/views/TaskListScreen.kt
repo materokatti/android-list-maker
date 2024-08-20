@@ -17,7 +17,9 @@ import com.kodeco.android.data.TaskList
 import com.kodeco.android.viewmodel.ListDataManager
 
 @Composable
-fun TaskListScreen() {
+fun TaskListScreen(
+    navigate: (String) -> Unit
+) {
     val taskListViewModel: ListDataManager = viewModel()
     val viewModelTasks = taskListViewModel.readLists().toList()
     var tasks by remember {
@@ -38,7 +40,7 @@ fun TaskListScreen() {
                     .fillMaxSize(),
                 tasks = tasks,
                 onClick = { taskName ->
-                    // TODO navigate to the tasks details screen
+                    navigate(taskName)
                 }
             )
         },
@@ -49,6 +51,7 @@ fun TaskListScreen() {
                 onFabClick = {
                     tasks = (tasks + TaskList(it))
                     taskListViewModel.saveList(TaskList(it))
+                    navigate(it)
                 }
             )
         }

@@ -1,9 +1,12 @@
 package com.kodeco.android.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.kodeco.android.views.TaskDetailScreen
 import com.kodeco.android.views.TaskListScreen
 
 @Composable
@@ -14,7 +17,22 @@ fun AppNavHost() {
         startDestination = Screens.TaskListScreen.route
     ) {
         composable(Screens.TaskListScreen.route) {
-            TaskListScreen()
+            TaskListScreen(
+                navigate = { taskListName ->
+                    navController.navigate("${Screens.TaskDetailScreen.route}/$taskListName")
+                }
+            )
+        }
+        composable(
+            route = "${Screens.TaskDetailScreen.route}/{taskListName}",
+            arguments = listOf(navArgument("taskListName"){
+                type = NavType.StringType
+            })
+        ){
+            TaskDetailScreen(
+                taskName = it.arguments?.getString("taskListName"),
+                onBackPressed = { navController.popBackStack() }
+            )
         }
     }
 }

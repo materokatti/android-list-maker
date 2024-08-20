@@ -35,7 +35,10 @@ fun TaskDetailScreenContent(
 }
 
 @Composable
-fun TaskDetailScreen(){
+fun TaskDetailScreen(
+    taskName: String?,
+    onBackPressed:() -> Unit
+){
     Scaffold(
         topBar = {
             ListMakerTopAppBar(
